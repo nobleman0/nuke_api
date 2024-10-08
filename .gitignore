@@ -1,0 +1,51 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.sqlite3
+
+# Django specific
+db.sqlite3
+media/
+staticfiles/
+*.log
+*.pot
+*.py[cod]
+*.coverage
+.coverage
+.tox/
+.env
+*.env
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+*.iml
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Coverage reports
+htmlcov/
+coverage.xml
+
+# Migrations
+*/migrations/*.py
+*/migrations/*.pyc
+
+# Testing
+.test/
+*.egg-info/
+dist/
+build/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Sphinx documentation
+docs/_build/
