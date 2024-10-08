@@ -1,0 +1,74 @@
+---
+  - name: Setup Django Server
+    hosts: nuke
+    become: true
+    become_method: sudo
+    gather_facts: no
+    vars_files:
+      - vars/main.yaml
+
+    tasks:
+      - name: Install Docker
+        apt:
+          name: docker.io
+          state: present
+          update_cache: yes
+
+      - name: remove previous running container and image
+        shell: |
+          docker stop nuke_api && docker rm nuke_api
+          docker rmi 4568910/nuke_api:latest
+        ignore_errors: true
+
+      - name: Pull Docker Image
+        docker_image:
+          name: 4568910/nuke_api:latest
+          source: pull
+
+      - name: Run Docker Container
+        docker_container:
+          name: nuke_api
+          image: 4568910/nuke_api:latest
+          ports:
+            - "8000:8000"
+          restart_policy: always
+
+    # - name: Install Python pip
+    #   apt:
+    #     name: python3-pip
+    #     state: present
+    #     update_cache: yes
+
+    # - name: Install Virtual env
+    #   apt:
+    #     name: python3.10-venv
+    #     state: present
+    #     update_cache: yes
+
+    # - name: Perform Cleanup
+    #   shell: |
+    #     pkill -f 'python3 manage.py' &
+        
+    #     rm -rf /home/ubuntu/app
+    #   ignore_errors: true
+        
+
+
+    # - name: pull branch master
+    #   git:
+    #     repo: git@github.com:unuefeejovwoke/Nuke_api.git
+    #     dest: /home/ubuntu/app
+    #     accept_hostkey: yes
+    #     key_file: /home/ubuntu/.ssh/id_rsa
+
+    # - name: Switch Git branch
+    #   git:
+    #     repo: /home/ubuntu/app
+    #     dest: /home/ubuntu/app
+    #     version: dev
+
+
+    # - name: Complete Setup
+    #   script: files/start_server.sh
+
+
