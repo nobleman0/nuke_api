@@ -27,6 +27,18 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      - name: Notify Microsoft Teams
+        uses: skitionek/notify-microsoft-teams@master
+        with:
+          webhook_url: ${{ secrets.TEAMS_WEBHOOK_URL }}  # Your Teams webhook URL
+          message: |
+            The SonarQube Quality Gate status is: ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}.
+            ${{ 
+              steps.sonarqube-quality-gate-check.outputs.quality-gate-status == 'FAILED' && 'Please address the issues.' ||
+              steps.sonarqube-quality-gate-check.outputs.quality-gate-status == 'WARN' && 'There are some warnings to review.' ||
+              'Everything is fine!'
+            }}
+
       # Show the output from the Quality Gate.
       # The possible outputs of the `quality-gate-status` variable are `PASSED`, `WARN` or `FAILED`.
       - name: "Here is SonarQube Quality Gate Status value.."
